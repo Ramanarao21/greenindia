@@ -135,11 +135,11 @@ Migrations are stored in `prisma/migrations/` and track schema changes over time
 Use these credentials to test the API immediately:
 
 ```
-Email:    test@example.com
-Password: password123
+Email:   user@gmail.com
+Password: user123
 ```
 
-**Note:** These are dummy credentials. You'll need to register this user first using the `/api/auth/register` endpoint, or create a seed script.
+**Note:** These are dummy credentials. You'll need to register this user first using the `/api/auth/register` endpoint.
 
 ### Quick Test Flow
 
@@ -492,138 +492,6 @@ Response (200):
 For detailed examples, error cases, and testing guide, see:
 - **[COMPLETE_API_GUIDE.md](./COMPLETE_API_GUIDE.md)** - Full testing guide with all endpoints
 - **[API_TESTING_GUIDE.md](./API_TESTING_GUIDE.md)** - Step-by-step testing instructions
-
----
-
-## 7. What I'd Do With More Time
-
-### Immediate Improvements (1-2 days)
-
-1. **Structured Validation Errors**
-   - Currently returns simple `{ error: "validation failed" }`
-   - Would add field-level errors: `{ error: "validation failed", fields: { email: "is required" } }`
-   - Use a validation library like Zod or Joi
-
-2. **Comprehensive Logging**
-   - Winston is installed but not configured
-   - Would add structured logging with request IDs
-   - Log levels: error, warn, info, debug
-   - Log to files and console
-
-3. **Integration Tests**
-   - Add Jest + Supertest
-   - Test all endpoints with real database (test container)
-   - Minimum 80% code coverage
-   - CI/CD pipeline with GitHub Actions
-
-4. **Pagination**
-   - Add `?page=1&limit=20` to list endpoints
-   - Return metadata: `{ data: [...], page: 1, totalPages: 5, totalItems: 100 }`
-   - Default limit of 50 items
-
-### Medium-term Improvements (1 week)
-
-5. **Refresh Tokens**
-   - Short-lived access tokens (15 min)
-   - Long-lived refresh tokens (7 days)
-   - Stored in database for revocation
-
-6. **Rate Limiting**
-   - Use express-rate-limit
-   - Different limits per endpoint type
-   - Auth endpoints: 5 requests/15 min
-   - API endpoints: 100 requests/15 min
-
-7. **Input Sanitization**
-   - Prevent XSS attacks
-   - Sanitize all user inputs
-   - Use libraries like DOMPurify or validator.js
-
-8. **API Versioning**
-   - Change routes to `/api/v1/*`
-   - Allows breaking changes in v2 without affecting v1 users
-
-9. **Database Indexing**
-   - Add indexes on frequently queried fields
-   - `email` (already unique, so indexed)
-   - `projectId` in tasks
-   - `status` and `assignedTo` for filtering
-
-10. **Soft Deletes**
-    - Add `deletedAt` field
-    - Don't actually delete records
-    - Allows recovery and audit trails
-
-### Long-term Improvements (2+ weeks)
-
-11. **Real-time Updates**
-    - WebSocket support for live task updates
-    - Notify team members when tasks change
-    - Use Socket.io or native WebSockets
-
-12. **File Uploads**
-    - Attach files to tasks
-    - Use S3 or similar object storage
-    - Image thumbnails for previews
-
-13. **Email Notifications**
-    - Task assignments
-    - Due date reminders
-    - Project updates
-    - Use SendGrid or AWS SES
-
-14. **Advanced Permissions**
-    - Role-based access control (RBAC)
-    - Project members with different roles
-    - Viewer, Editor, Admin roles
-
-15. **Search & Filtering**
-    - Full-text search across tasks
-    - Advanced filters (date ranges, multiple statuses)
-    - Use PostgreSQL full-text search or Elasticsearch
-
-16. **Audit Logs**
-    - Track all changes (who, what, when)
-    - Immutable log table
-    - Useful for compliance and debugging
-
-17. **Performance Optimization**
-    - Database query optimization
-    - Caching with Redis
-    - Response compression
-    - CDN for static assets
-
-18. **Documentation**
-    - OpenAPI/Swagger spec
-    - Interactive API docs
-    - Postman collection
-    - Architecture diagrams
-
-### Shortcuts I Took
-
-1. **No validation library**: Using manual checks instead of Zod/Joi
-2. **Simple error messages**: Not providing detailed field-level errors
-3. **No tests**: Would normally write tests first (TDD)
-4. **No seed data**: Manual user creation instead of automated seeding
-5. **Basic logging**: Console.log instead of structured logging
-6. **No monitoring**: Would add APM (Application Performance Monitoring)
-7. **Hardcoded values**: Some defaults could be environment variables
-8. **No Docker for app**: Only database is containerized
-
-### Quality vs. Speed Tradeoffs
-
-I prioritized:
-- ✅ **Clean architecture** over speed of development
-- ✅ **Security basics** (bcrypt, JWT) over advanced features
-- ✅ **Core functionality** over nice-to-haves
-- ✅ **Readable code** over clever optimizations
-
-This approach means the codebase is:
-- Easy to understand and extend
-- Production-ready for MVP
-- Missing some enterprise features
-- Ready for team collaboration
-
 ---
 
 ## Project Structure
@@ -668,10 +536,9 @@ taskflow/
 
 ```env
 # Database
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ramana21?schema=public"
-
+DATABASE_URL="postgresql://USERNAME:PASSWORD@HOST:PORT/DATABASE?schema=public"
 # JWT
-JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
+JWT_SECRET="jwtsecretkey"
 
 # Server
 PORT=3000
@@ -679,13 +546,3 @@ NODE_ENV=development
 ```
 
 ---
-
-## License
-
-MIT
-
----
-
-## Contact
-
-For questions or issues, please open an issue on GitHub.
